@@ -311,12 +311,46 @@ const applySettings = (settings: ExtensionSettings): void => {
   else if (settings.enabled && !observer) start();
 };
 
+/**
+ * The Pegaso LMS is a Vue SPA, so entering a lesson URL via in-app navigation
+ * never triggers a fresh document load. Content scripts only inject on real
+ * loads, so without a URL watcher the controller would stay dormant until the
+ * user hit refresh. We listen for history changes and start/stop to match.
+ */
+const LOCATION_CHANGE_EVENT = 'unipegaso:locationchange';
+
+const handleUrlChange = (): void => {
+  if (urlMatches()) {
+    if (state.settings.enabled && !observer) start();
+  } else if (observer) {
+    stop();
+  }
+};
+
+const installUrlWatcher = (): void => {
+  const emit = (): void => {
+    window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
+  };
+  const originalPush = history.pushState.bind(history);
+  const originalReplace = history.replaceState.bind(history);
+  history.pushState = (data, unused, url) => {
+    originalPush(data, unused, url);
+    emit();
+  };
+  history.replaceState = (data, unused, url) => {
+    originalReplace(data, unused, url);
+    emit();
+  };
+  window.addEventListener('popstate', emit);
+  window.addEventListener(LOCATION_CHANGE_EVENT, handleUrlChange);
+};
+
 const bootstrap = async (): Promise<void> => {
-  if (!urlMatches()) return;
   const settings = await loadSettings();
   state.settings = settings;
-  if (settings.enabled) start();
+  installUrlWatcher();
   watchSettings(applySettings);
+  handleUrlChange();
 };
 
 void bootstrap();
