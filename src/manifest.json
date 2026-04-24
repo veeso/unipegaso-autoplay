@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Unipegaso AutoPlay",
   "short_name": "unipegaso-autoplay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Passa automaticamente alla lezione successiva sulle pagine videolezioni di Unipegaso quando quella corrente è completata.",
   "icons": {
     "48": "icons/icon-48.png",
@@ -14,12 +14,19 @@
       "id": "unipegaso-autoplay@veeso.dev",
       "strict_min_version": "115.0",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     }
   },
-  "permissions": ["storage", "notifications"],
-  "host_permissions": ["https://lms.pegaso.multiversity.click/*"],
+  "permissions": [
+    "storage",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://lms.pegaso.multiversity.click/*"
+  ],
   "action": {
     "default_title": "Unipegaso AutoPlay — Avanzamento automatico",
     "default_popup": "popup/popup.html",
@@ -29,12 +36,18 @@
     }
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
-      "matches": ["https://lms.pegaso.multiversity.click/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://lms.pegaso.multiversity.click/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ]
