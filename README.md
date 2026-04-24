@@ -28,6 +28,12 @@ current one is marked complete.
 The popup in the toolbar lets you enable/disable the auto-advance at any time.
 Desktop notifications announce listening, pause, and each lesson transition.
 
+## Install
+
+Grab the signed `.xpi` from the
+[latest release](https://github.com/veeso/unipegaso-autoplay/releases/latest)
+and drag it onto a Firefox window, then click **Add**.
+
 ## Development
 
 ```bash
@@ -57,6 +63,23 @@ npm run package
 
 Produces a signed-ready `.zip` in `web-ext-artifacts/` using
 [`web-ext`](https://github.com/mozilla/web-ext).
+
+### Release
+
+```bash
+npm run release -- patch   # or: minor | major
+git push origin main --follow-tags
+```
+
+The script bumps `package.json` + `src/manifest.json`, commits, and creates an
+annotated `vX.Y.Z` tag. Pushing the tag triggers
+[`.github/workflows/release.yml`](./.github/workflows/release.yml), which signs
+the extension via the AMO unlisted channel and publishes a GitHub release with
+the signed `.xpi` attached.
+
+Requires repository secrets `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` — generate
+them at
+[addons.mozilla.org/developers/addon/api/key](https://addons.mozilla.org/developers/addon/api/key/).
 
 ## Project layout
 
