@@ -13,7 +13,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "node scripts/build.mjs --watch",
-    "package": "npm run build && web-ext build --source-dir=dist --artifacts-dir=web-ext-artifacts --overwrite-dest",
+    "package": "npm run build && web-ext build --source-dir=dist --artifacts-dir=web-ext-artifacts --overwrite-dest && npm run package:source",
+    "package:source": "node scripts/source-zip.mjs",
     "start:firefox": "npm run build && web-ext run --source-dir=dist",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
