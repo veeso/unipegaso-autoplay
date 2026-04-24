@@ -59,6 +59,18 @@ header h1 {
   font-weight: 500;
 }
 
+.status.state-listening {
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+}
+
+.status.state-inactive {
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
+}
+
+.status.state-disabled {
+  background: var(--accent-soft);
+}
+
 .status .dot {
   width: 10px;
   height: 10px;
@@ -67,8 +79,16 @@ header h1 {
   transition: background-color 160ms ease;
 }
 
-.status.enabled .dot {
+.status.state-listening .dot {
   background: var(--ok);
+}
+
+.status.state-inactive .dot {
+  background: var(--muted);
+}
+
+.status.state-disabled .dot {
+  background: var(--accent);
 }
 
 .toggle-row {
