@@ -10,6 +10,12 @@ const STATUS_LABELS: Readonly<Record<StatusState, string>> = {
   listening: 'In ascolto',
 };
 
+const STATUS_DESCRIPTIONS: Readonly<Record<StatusState, string>> = {
+  disabled: 'avanzamento automatico disattivato',
+  inactive: 'apri una videolezione per attivare l’avanzamento',
+  listening: 'avanzamento automatico attivo',
+};
+
 const STATUS_CLASSES: readonly string[] = ['state-disabled', 'state-inactive', 'state-listening'];
 
 const requireElement = <T extends Element>(selector: string): T => {
@@ -36,9 +42,11 @@ const computeState = (enabled: boolean, url: string | undefined): StatusState =>
 const renderStatus = (state: StatusState): void => {
   const statusSection = requireElement<HTMLElement>('.status');
   const label = requireElement<HTMLElement>('#status-label');
+  const description = requireElement<HTMLElement>('#status-description');
   statusSection.classList.remove(...STATUS_CLASSES);
   statusSection.classList.add(`state-${state}`);
   label.textContent = STATUS_LABELS[state];
+  description.textContent = STATUS_DESCRIPTIONS[state];
 };
 
 const init = async (): Promise<void> => {

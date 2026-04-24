@@ -315,10 +315,12 @@ const applySettings = (settings: ExtensionSettings): void => {
  * The Pegaso LMS is a Vue SPA, so entering a lesson URL via in-app navigation
  * never triggers a fresh document load. Content scripts only inject on real
  * loads, so without a URL watcher the controller would stay dormant until the
- * user hit refresh. We listen for history changes and start/stop to match.
+ * user hit refresh. Firefox content scripts cannot reliably monkey-patch
+ * `history.pushState` from the isolated world (Xray wrappers block writes to
+ * native objects), so the background page watches `webNavigation` and pushes
+ * a message here on every history-state update. `popstate` still handles
+ * back/forward directly in this world.
  */
-const LOCATION_CHANGE_EVENT = 'unipegaso:locationchange';
-
 const handleUrlChange = (): void => {
   if (urlMatches()) {
     if (state.settings.enabled && !observer) start();
@@ -327,22 +329,22 @@ const handleUrlChange = (): void => {
   }
 };
 
+interface UrlChangedMessage {
+  type: 'url-changed';
+  url: string;
+}
+
+const isUrlChangedMessage = (value: unknown): value is UrlChangedMessage =>
+  typeof value === 'object' &&
+  value !== null &&
+  (value as { type?: unknown }).type === 'url-changed';
+
 const installUrlWatcher = (): void => {
-  const emit = (): void => {
-    window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
-  };
-  const originalPush = history.pushState.bind(history);
-  const originalReplace = history.replaceState.bind(history);
-  history.pushState = (data, unused, url) => {
-    originalPush(data, unused, url);
-    emit();
-  };
-  history.replaceState = (data, unused, url) => {
-    originalReplace(data, unused, url);
-    emit();
-  };
-  window.addEventListener('popstate', emit);
-  window.addEventListener(LOCATION_CHANGE_EVENT, handleUrlChange);
+  window.addEventListener('popstate', handleUrlChange);
+  browser.runtime.onMessage.addListener((message: unknown) => {
+    if (isUrlChangedMessage(message)) handleUrlChange();
+    return undefined;
+  });
 };
 
 const bootstrap = async (): Promise<void> => {

@@ -18,7 +18,7 @@
       }
     }
   },
-  "permissions": ["storage", "notifications"],
+  "permissions": ["storage", "notifications", "webNavigation"],
   "host_permissions": ["https://lms.pegaso.multiversity.click/*"],
   "action": {
     "default_title": "Unipegaso AutoPlay — Avanzamento automatico",
