@@ -75,6 +75,11 @@ async function main() {
   await writeJson(pkgPath, pkg);
   await writeJson(manifestPath, manifest);
 
+  // JSON.stringify expands short arrays onto multiple lines, which clashes
+  // with Prettier's default JSON formatting and trips CI format:check. Run
+  // Prettier on the two files we touched so the bump commit stays clean.
+  sh('npx', ['prettier', '--write', 'package.json', 'src/manifest.json']);
+
   sh('git', ['add', 'package.json', 'src/manifest.json']);
   sh('git', ['commit', '-m', `release: ${tag}`]);
   sh('git', ['tag', '-a', tag, '-m', tag]);

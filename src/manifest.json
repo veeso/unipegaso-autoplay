@@ -14,19 +14,12 @@
       "id": "unipegaso-autoplay@veeso.dev",
       "strict_min_version": "115.0",
       "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
+        "required": ["none"]
       }
     }
   },
-  "permissions": [
-    "storage",
-    "notifications"
-  ],
-  "host_permissions": [
-    "https://lms.pegaso.multiversity.click/*"
-  ],
+  "permissions": ["storage", "notifications"],
+  "host_permissions": ["https://lms.pegaso.multiversity.click/*"],
   "action": {
     "default_title": "Unipegaso AutoPlay — Avanzamento automatico",
     "default_popup": "popup/popup.html",
@@ -36,18 +29,12 @@
     }
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://lms.pegaso.multiversity.click/*"
-      ],
-      "js": [
-        "content.js"
-      ],
+      "matches": ["https://lms.pegaso.multiversity.click/*"],
+      "js": ["content.js"],
       "run_at": "document_idle"
     }
   ]
