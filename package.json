@@ -21,7 +21,8 @@
     "format:check": "prettier --check \"**/*.{ts,js,mjs,json,md,html,css}\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "release": "node scripts/release.mjs"
   },
   "devDependencies": {
     "@types/firefox-webext-browser": "^143.0.0",

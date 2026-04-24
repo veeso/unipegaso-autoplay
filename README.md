@@ -1,5 +1,10 @@
 # unipegaso-autoplay
 
+![logo](./assets/images/logo-150.png)
+
+[![conventional-commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+[![test](https://github.com/veeso/unipegaso-autoplay/actions/workflows/ci.yml/badge.svg)](https://github.com/veeso/unipegaso-autoplay/actions/workflows/ci.yml)
+
 Firefox extension that automatically advances to the next lesson on
 [Unipegaso](https://lms.pegaso.multiversity.click) video-lesson pages when the
 current one is marked complete.
