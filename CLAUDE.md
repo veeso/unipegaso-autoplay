@@ -76,6 +76,24 @@ test/
 | `npm run typecheck`               | `tsc --noEmit`                                      |
 | `npm test`                        | Vitest (jsdom environment)                          |
 
+## Required checks before reporting work done
+
+After **any** code change (TS, JS, JSON, manifest, scripts, config), run the
+full gate locally before committing — CI enforces the same checks and a miss
+ships a broken build:
+
+```sh
+npm run format:check
+npm run lint
+npm run typecheck
+npm test
+```
+
+If you touched the build pipeline, also run `npm run package` and confirm both
+`web-ext-artifacts/unipegaso_autoplay-<ver>.zip` and
+`web-ext-artifacts/source.zip` are produced. Only claim a task complete once
+every gate passes; if one fails, fix the root cause — do not bypass or defer.
+
 ## Design guardrails
 
 - Keep parsing **pure**: `dom.ts` and `navigator.ts` must not touch the
